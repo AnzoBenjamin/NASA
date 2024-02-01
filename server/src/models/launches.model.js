@@ -4,6 +4,7 @@ const planets = require("./planets.mongo");
 const DEFAULT_FLIGHT_NUMBER = 100;
 
 const SPACE_X_API_URL = "https://api.spacexdata.com/v4/launches/query";
+
 async function populateLaunches() {
   console.log("Downloading api data...");
   const response = await axios.post(SPACE_X_API_URL, {
@@ -44,6 +45,7 @@ async function populateLaunches() {
     await saveLaunch(launch)
   }
 }
+
 async function loadLaunchesData() {
   const firstLaunch = await findLaunch({
     flightNumber: 1,
@@ -64,8 +66,8 @@ async function getLatestFlightNumber() {
   } else return latestLaunch.flightNumber;
 }
 
-async function getAllLaunches() {
-  return await launches.find({}, { __id: 0, __v: 0 });
+async function getAllLaunches(limit, skip) {
+  return await launches.find({}, { __id: 0, __v: 0 }).skip(skip).limit(limit).sort({flightNumber: 1});
 }
 
 async function scheduleNewLaunch(launch) {
@@ -74,7 +76,7 @@ async function scheduleNewLaunch(launch) {
   const newLaunch = Object.assign(launch, {
     success: true,
     upcoming: true,
-    customers: ["Zero to Mastery", "NASA"],
+    customers: ["NASA"],
     flightNumber: latestFlightNumber,
   });
   await saveLaunch(newLaunch);
@@ -87,7 +89,7 @@ async function saveLaunch(launch) {
   if (!planet) {
     throw new Error("No matching planets were found");
   }
-  await launches.updateOne(
+  await launches.findOneAndUpdate(
     {
       flightNumber: launch.flightNumber,
     },
