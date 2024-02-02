@@ -12,7 +12,4 @@ app.use(morgan("combined"));
 
 app.use("/v1", api)
 
-app.use("/*", (req, res, next) => {
-  res.sendFile(path.join(__dirname, "..", "public", "index.html"));
-});
 module.exports = app;
