@@ -4,11 +4,9 @@ require('dotenv').config()
 const MONGO_URL = process.env.MONGO_URL;
 
 mongoose.connection.once("open", () => {
-  console.log("Connected successfully");
 });
 
 mongoose.connection.once("error", (err) => {
-  console.error(err);
 });
 
 const mongoConnect = async() => {

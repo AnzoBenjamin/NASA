@@ -39,16 +39,12 @@ async function httpSetNewLaunch(req, res) {
 async function httpAbortLaunch(req, res) {
   const launchID = req.params.id;
   const existsLaunch =await existsLaunchWithID(launchID)
-  console.log("Deleting...")
   if (!existsLaunch)
   {
-    console.log("Does not exist")
-
     return res.status(400).json({
       error: "No launch with that ID found",
     });
   }
-  console.log("Deleted")
   await abortLaunchWithID(launchID)
   return res.status(200).json(launchID);
 }

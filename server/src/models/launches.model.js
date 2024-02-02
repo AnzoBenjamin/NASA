@@ -6,7 +6,6 @@ const DEFAULT_FLIGHT_NUMBER = 100;
 const SPACE_X_API_URL = "https://api.spacexdata.com/v4/launches/query";
 
 async function populateLaunches() {
-  console.log("Downloading api data...");
   const response = await axios.post(SPACE_X_API_URL, {
     query: {},
     options: {
@@ -53,7 +52,6 @@ async function loadLaunchesData() {
     mission: "FalconSat",
   });
   if (firstLaunch) {
-    console.log("Data already exists");
     return;
   }
   await populateLaunches()

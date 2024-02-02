@@ -34,7 +34,6 @@ function loadPlanetsData() {
       })
       .on("end", async () => {
         const countPlanetsFound = (await getAllPlanets()).length;
-        console.log(`${countPlanetsFound} habitable planets found!`);
         resolve();
       });
   });
@@ -53,7 +52,7 @@ async function savePlanets(planet) {
       { upsert: true }
     );
   } catch (error) {
-    console.log("Could not save planets. Error ", error);
+    return error
   }
 }
 module.exports = {
